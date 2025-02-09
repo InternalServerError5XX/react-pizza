@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 import Search from "../Filter/Search";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCreatePizzaOpen } from "../../redux/slices/modalSlice";
+import { getCartItemsCount, getCartTotal } from "../../redux/slices/cartSlise";
 
 function Header() {
   const dispatch = useDispatch();
   const handleOpen = () => dispatch(setCreatePizzaOpen(true));
+  const cartItemsCount = useSelector((state) => getCartItemsCount(state));
+  const cartTotal = useSelector((state) => getCartTotal(state));
 
   return (
     <header className="header">
@@ -31,7 +34,7 @@ function Header() {
         </div>
         <div className="header__cart" style={{ marginLeft: "-250px" }}>
           <Link to="/cart" className="button button--cart">
-            <span>$0</span>
+            <span>${cartTotal}</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -62,7 +65,7 @@ function Header() {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>0</span>
+            <span>{cartItemsCount}</span>
           </Link>
         </div>
       </div>

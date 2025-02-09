@@ -3,6 +3,7 @@ import searchReducer from "../redux/slices/searchSlice";
 import filterReducer from "../redux/slices/filterSlice";
 import paginationReducer from "../redux/slices/paginationSlice";
 import modalReducer from "./slices/modalSlice";
+import cartReducer from "./slices/cartSlise";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     filter: filterReducer,
     pagination: paginationReducer,
     modal: modalReducer,
+    cart: cartReducer,
   },
 });
