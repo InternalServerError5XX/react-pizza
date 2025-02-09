@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "imageUrl": "https://dominos.ua/_next/image/?url=https%3A%2F%2Fmedia-v3.dominos.ua%2FProducts%2FPitsa%2FPitsy%2Fkrashcha%20tsina%2FSaliami%2Fpizza-salami-bestprice-website-main-ukr.webp&w=480&q=75",
+    "name": "Pizza 1",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 13,
+    "category": 1,
+    "rating": 4
+  },
+  {
+    "id": 2,
+    "imageUrl": "https://dominos.ua/_next/image/?url=https%3A%2F%2Fmedia-v3.dominos.ua%2FProducts%2FPitsa%2FPitsy%2Fz%20teliatynoiu%20i%20tomatamy%2Fpizza-vealtomato-website-main.webp&w=480&q=75",
+    "name": "Pizza 2",
+    "types": [0],
+    "sizes": [26, 40],
+    "price": 14,
+    "category": 2,
+    "rating": 6
+  },
+  {
+    "id": 3,
+    "imageUrl": "https://dominos.ua/_next/image/?url=https%3A%2F%2Fmedia-v3.dominos.ua%2FProducts%2Ftekhas-300dpi-min.webp&w=480&q=75",
+    "name": "Pizza 3",
+    "types": [0],
+    "sizes": [26, 40],
+    "price": 15,
+    "category": 1,
+    "rating": 4
+  },
+  {
+    "id": 4,
+    "imageUrl": "https://dominos.ua/_next/image/?url=https%3A%2F%2Fmedia-v3.dominos.ua%2FProducts%2Fpepperony-y-tomaty-300dpi.webp&w=480&q=75",
+    "name": "Pizza 4",
+    "types": [1],
+    "sizes": [26, 30, 40],
+    "price": 16,
+    "category": 2,
+    "rating": 2
+  },
+  {
+    "id": 5,
+    "imageUrl": "https://dominos.ua/_next/image/?url=https%3A%2F%2Fmedia-v3.dominos.ua%2FProducts%2Fmanhatten-slice-collageweb-min.webp&w=480&q=75",
+    "name": "Pizza 5",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 12,
+    "category": 3,
+    "rating": 8
+  },
+  {
+    "id": 6,
+    "imageUrl": "https://dominos.ua/_next/image/?url=https%3A%2F%2Fmedia-v3.dominos.ua%2FProducts%2Fvetchina-i-griby.webp&w=480&q=75",
+    "name": "Pizza 6",
+    "types": [0],
+    "sizes": [30, 40],
+    "price": 15,
+    "category": 4,
+    "rating": 2
+  },
+  {
+    "id": 7,
+    "imageUrl": "https://dominos.ua/_next/image/?url=https%3A%2F%2Fmedia-v3.dominos.ua%2FProducts%2FPitsa%2FPitsy%2Fdiabolo-pizzapieces.webp&w=480&q=75",
+    "name": "Pizza 7",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 11,
+    "category": 4,
+    "rating": 9
+  },
+  {
+    "id": 8,
+    "imageUrl": "https://dominos.ua/_next/image/?url=https%3A%2F%2Fmedia-v3.dominos.ua%2FProducts%2Fpepperony-300dpi-min.webp&w=480&q=75",
+    "name": "Pizza 8",
+    "types": [0, 1],
+    "sizes": [26, 30, 40],
+    "price": 10,
+    "category": 5,
+    "rating": 10
+  }
+]
