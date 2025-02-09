@@ -5,7 +5,7 @@ import Categories from "../components/Filter/Categories";
 import Sort from "../components/Filter/Sort";
 import PizzaItem from "../components/Main/PizzaItem";
 import CircularProgress from "@mui/material/CircularProgress";
-import Pagination from "../components/Main/Pagination";
+import Pagination from "../components/Filter/Pagination";
 import CreatePizzaModal from "../components/Header/CreatePizzaModal";
 import UpdatePizzaModal from "../components/Main/UpdatePizzaModal";
 
