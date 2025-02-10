@@ -1,8 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearCart,
+  getCartItemsCount,
+  getCartTotal,
+} from "../redux/slices/cartSlise";
 import CartItem from "../components/Main/CartItem";
 
 const Cart = () => {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const cartItemsCount = useSelector((state) => getCartItemsCount(state));
+  const cartTotal = useSelector((state) => getCartTotal(state));
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
   return (
     <div className="container " style={{ marginTop: "-30px" }}>
       <div className="cart">
@@ -39,7 +54,7 @@ const Cart = () => {
             </svg>
             Cart
           </h2>
-          <div className="cart__clear">
+          <div className="cart__clear" onClick={handleClearCart}>
             <svg
               width="20"
               height="20"
@@ -80,16 +95,23 @@ const Cart = () => {
             <span>Clear the cart</span>
           </div>
         </div>
-        <div className="content__items">{/* <CartItem /> */}</div>
+        <div className="content__items">
+          {cartItems.map((obj, index) => (
+            <CartItem
+              key={`${obj.id}-${obj.size}-${obj.type}-${index}`}
+              {...obj}
+            />
+          ))}
+        </div>
         <div className="cart__bottom">
           <div className="cart__bottom-details">
             <span>
               {" "}
-              Total items: <b>0</b>{" "}
+              Total items: <b>{cartItemsCount}</b>{" "}
             </span>
             <span>
               {" "}
-              Total sum: <b>$0</b>{" "}
+              Total sum: <b>${cartTotal}</b>{" "}
             </span>
           </div>
           <div className="cart__bottom-buttons">
@@ -116,7 +138,7 @@ const Cart = () => {
               <span>Back</span>
             </Link>
             <div className="button pay-btn">
-              <span>Оплатить сейчас</span>
+              <span>Order</span>
             </div>
           </div>
         </div>
