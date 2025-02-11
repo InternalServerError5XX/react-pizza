@@ -106,11 +106,9 @@ const Cart = () => {
         <div className="cart__bottom">
           <div className="cart__bottom-details">
             <span>
-              {" "}
               Total items: <b>{cartItemsCount}</b>{" "}
             </span>
             <span>
-              {" "}
               Total sum: <b>${cartTotal}</b>{" "}
             </span>
           </div>

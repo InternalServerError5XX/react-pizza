@@ -11,7 +11,9 @@ const CartItem = ({
   item: { id, name, price, imageUrl, size, type },
 }) => {
   const dispatch = useDispatch();
-  const itemQuantity = useSelector((state) => getItemQuantityById(state, id));
+  const itemQuantity = useSelector((state) =>
+    getItemQuantityById(state, id, size, type)
+  );
   const typeNames = ["Thin", "Traditional"];
 
   const handleAddToCart = () => {
@@ -28,12 +30,12 @@ const CartItem = ({
   };
 
   const handleDeleteFromCart = () => {
-    dispatch(deleteFromCart(id));
+    dispatch(deleteFromCart({ id, size, type }));
   };
 
   const handleDeleteItemsFromCart = () => {
     Array.from({ length: itemQuantity }).forEach(() => {
-      dispatch(deleteFromCart(id));
+      dispatch(deleteFromCart({ id, size, type }));
     });
   };
 

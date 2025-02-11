@@ -58,8 +58,6 @@ function UpdatePizzaModal({ onUpdate }) {
         ? pizza.sizes.toString().split(",").map(Number)
         : [];
     }
-    console.log(pizza);
-    console.log(pizzaToUpdate);
     if (pizza.types !== pizzaToUpdate.types) {
       updatedPizza.types = pizza.types
         ? pizza.types.map((type) => parseInt(type, 10))

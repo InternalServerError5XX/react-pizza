@@ -25,9 +25,12 @@ function PizzaItem({
   onDelete,
 }) {
   const dispatch = useDispatch();
-  const itemQuantity = useSelector((state) => getItemQuantityById(state, id));
   const [activeSize, setActiveSize] = useState(sizes[0]);
   const [activeType, setActiveType] = useState(types[0]);
+  const itemQuantity = useSelector((state) =>
+    getItemQuantityById(state, id, activeSize, activeType)
+  );
+
   const typeNames = ["thin", "traditional"];
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -68,7 +71,7 @@ function PizzaItem({
   };
 
   const handleDeleteFromCart = () => {
-    dispatch(deleteFromCart(id));
+    dispatch(deleteFromCart({ id, size: activeSize, type: activeType }));
   };
 
   return (
