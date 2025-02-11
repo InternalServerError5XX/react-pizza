@@ -1,15 +1,16 @@
+using pizza_api.Extensions;
+using pizza_api.Services.AuthService;
 using pizza_api.Services.OrderService;
 using pizza_api.Services.PizzaService;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddJwtAuthentication();
 builder.Services.AddControllers();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IPizzaService, PizzaService>();
 builder.Services.AddSingleton<IOrderService, OrderService>();
 
@@ -35,6 +36,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

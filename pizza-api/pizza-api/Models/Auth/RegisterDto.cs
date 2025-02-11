@@ -1,22 +1,20 @@
-﻿using System.Text.Json.Serialization;
-using pizza_api.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace pizza_api.Entities;
+namespace pizza_api.Models.Auth;
 
-public class User
+public class RegisterDto
 {
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
-
+    [Required]
+    [EmailAddress]
     [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
 
+    [Required]
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
 
-    [JsonPropertyName("role")]
-    public UserRoles UserRole { get; set; }
-
+    [Required]
     [JsonPropertyName("password")]
     public string Password { get; set; } = string.Empty;
 }

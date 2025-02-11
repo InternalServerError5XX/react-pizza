@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using pizza_api.Enums;
 using pizza_api.Models;
 using pizza_api.Models.Pizza;
 using pizza_api.Requests.PizzaRequests;
@@ -30,20 +32,22 @@ public class PizzaController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = nameof(UserRoles.Admin))]
     public async Task<IActionResult> Create(CreatePizzaDto pizzaDto)
     {
         if (!ModelState.IsValid)
-            return BadRequest();
+            return BadRequest(ModelState);
 
         var response = await mediator.Send(new CreatePizzaQuery(pizzaDto));
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
     [HttpPatch]
+    [Authorize(Roles = nameof(UserRoles.Admin))]
     public async Task<IActionResult> Update([Required] int id, UpdatePizzaDto pizzaDto)
     {
-        if (pizzaDto == null)
-            return BadRequest();
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
         var response = await mediator.Send(new UpdatePizzaQuery(id, pizzaDto));
         if (response == null)
@@ -53,6 +57,7 @@ public class PizzaController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = nameof(UserRoles.Admin))]
     public async Task<IActionResult> Delete(int id)
     {
         var response = await mediator.Send(new DeletePizzaQuery(id));

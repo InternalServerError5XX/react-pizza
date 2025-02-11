@@ -12,12 +12,13 @@ public class PizzaService : IPizzaService
 
     public PizzaService(ILogger<IPizzaService> logger)
     {
-        var json = File.ReadAllText("pizzas.json");
-        if (json == null)
+        _logger = logger;
+        var json = File.ReadAllText("data/pizzas.json");
+
+        if (string.IsNullOrEmpty(json))
             return;
 
         _pizzas = JsonSerializer.Deserialize<List<Pizza>>(json)!;
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public List<Pizza> GetAll()
