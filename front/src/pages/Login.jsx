@@ -37,7 +37,7 @@ const Login = () => {
       dispatch(setToken(response.data));
       navigate("/");
     } catch (error) {
-      const errorMessage = error.response?.data?.error || "Auth error";
+      const errorMessage = error.response?.data?.error || error;
       console.error("Auth error:", errorMessage);
       dispatch(setError(errorMessage));
     } finally {

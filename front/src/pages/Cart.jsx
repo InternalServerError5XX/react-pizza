@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,20 +6,70 @@ import {
   getCartItemsCount,
   getCartTotal,
 } from "../redux/slices/cartSlise";
+import { orderApi } from "../components/utils/helpers/axiosInstance";
 import CartItem from "../components/Main/CartItem";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const cartItemsCount = useSelector((state) => getCartItemsCount(state));
   const cartTotal = useSelector((state) => getCartTotal(state));
+  const userId = useSelector((state) => state.auth.userId);
+
+  const [toast, setToast] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   const handleClearCart = () => {
     dispatch(clearCart());
   };
 
+  const handleOrder = async () => {
+    try {
+      const orderData = {
+        userId: userId,
+        items: cartItems.map((obj) => ({
+          id: obj.item.id,
+          name: obj.item.name,
+          imageUrl: obj.item.imageUrl,
+          sizes: [obj.item.size],
+          types: [obj.item.type],
+          price: obj.item.price,
+          category: 0,
+          rating: 0,
+        })),
+      };
+
+      var response = await orderApi.post("", orderData);
+      dispatch(clearCart());
+
+      setToast({
+        open: true,
+        message: "Order placed successfully!",
+        severity: "success",
+      });
+    } catch (error) {
+      const errorMessage = error.response?.data?.error || error;
+      console.error("Order failed:", errorMessage);
+
+      setToast({
+        open: true,
+        message: errorMessage,
+        severity: "error",
+      });
+    }
+  };
+
+  const handleCloseToast = () => {
+    setToast({ ...toast, open: false });
+  };
+
   return (
-    <div className="container " style={{ marginTop: "-30px" }}>
+    <div className="container" style={{ marginTop: "-30px" }}>
       <div className="cart">
         <div className="cart__top" style={{ marginBottom: "-40px" }}>
           <h2 className="content__title">
@@ -55,43 +105,6 @@ const Cart = () => {
             Cart
           </h2>
           <div className="cart__clear" onClick={handleClearCart}>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M2.5 5H4.16667H17.5"
-                stroke="#B6B6B6"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M6.66663 5.00001V3.33334C6.66663 2.89131 6.84222 2.46739 7.15478 2.15483C7.46734 1.84227 7.89127 1.66667 8.33329 1.66667H11.6666C12.1087 1.66667 12.5326 1.84227 12.8451 2.15483C13.1577 2.46739 13.3333 2.89131 13.3333 3.33334V5.00001M15.8333 5.00001V16.6667C15.8333 17.1087 15.6577 17.5326 15.3451 17.8452C15.0326 18.1577 14.6087 18.3333 14.1666 18.3333H5.83329C5.39127 18.3333 4.96734 18.1577 4.65478 17.8452C4.34222 17.5326 4.16663 17.1087 4.16663 16.6667V5.00001H15.8333Z"
-                stroke="#B6B6B6"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M8.33337 9.16667V14.1667"
-                stroke="#B6B6B6"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M11.6666 9.16667V14.1667"
-                stroke="#B6B6B6"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-
             <span>Clear the cart</span>
           </div>
         </div>
@@ -117,30 +130,38 @@ const Cart = () => {
               to="/"
               className="button button--outline button--add go-back-btn"
             >
-              <svg
-                width="8"
-                height="14"
-                viewBox="0 0 8 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7 13L1 6.93015L6.86175 1"
-                  stroke="#D3D3D3"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-
               <span>Back</span>
             </Link>
-            <div className="button pay-btn">
+            <div
+              className={`button pay-btn ${
+                !userId || cartItems.length === 0 ? "disabled" : ""
+              }`}
+              onClick={userId && cartItems.length > 0 ? handleOrder : null}
+              style={{
+                pointerEvents:
+                  !userId || cartItems.length === 0 ? "none" : "auto",
+                opacity: !userId || cartItems.length === 0 ? 0.5 : 1,
+              }}
+            >
               <span>Order</span>
             </div>
           </div>
         </div>
       </div>
+
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={4000}
+        onClose={handleCloseToast}
+      >
+        <Alert
+          onClose={handleCloseToast}
+          severity={toast.severity}
+          sx={{ width: "100%" }}
+        >
+          {toast.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

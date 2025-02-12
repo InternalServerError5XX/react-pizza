@@ -9,6 +9,10 @@ const pizzaApi = axios.create({
   baseURL: import.meta.env.VITE_PIZZA_API_URL,
 });
 
+const orderApi = axios.create({
+  baseURL: import.meta.env.VITE_ORDER_API_URL,
+});
+
 const addAuthInterceptor = (axiosInstance) => {
   axiosInstance.interceptors.request.use(
     (config) => {
@@ -26,5 +30,6 @@ const addAuthInterceptor = (axiosInstance) => {
 
 addAuthInterceptor(authApi);
 addAuthInterceptor(pizzaApi);
+addAuthInterceptor(orderApi);
 
-export { authApi, pizzaApi };
+export { authApi, pizzaApi, orderApi };

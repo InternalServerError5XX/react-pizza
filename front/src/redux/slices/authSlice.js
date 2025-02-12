@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 
 const initialState = {
   token: "",
+  userId: "",
   role: "",
   error: "",
 };
@@ -13,11 +14,13 @@ export const authSlice = createSlice({
   reducers: {
     setToken: (state, action) => {
       state.token = action.payload;
+      state.userId = jwtDecode(action.payload).nameid;
       state.role = jwtDecode(action.payload).role;
     },
     logout: (state) => {
       state.token = "";
-      state.role = null;
+      state.userId = "";
+      state.role = "";
     },
     setError: (state, action) => {
       state.error = action.payload;
