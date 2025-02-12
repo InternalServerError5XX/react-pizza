@@ -14,7 +14,7 @@ public class AuthService : IAuthService
 {
     private readonly List<User> _users = [];
     private readonly ILogger<IAuthService> _logger;
-    private readonly JwtTokenSettings _tokenSettings;
+    private readonly JwtTokenSettings? _tokenSettings;
 
     public AuthService(ILogger<IAuthService> logger)
     {
@@ -38,7 +38,7 @@ public class AuthService : IAuthService
             throw new Exception("Invalid password");
 
         _logger.LogInformation($"User with id {user.Id} logined");
-        return GenerateToken(user.Email, user.UserRole.ToString());
+        return GenerateToken(user);
     }
 
     public string Register(RegisterDto registerDto)
@@ -69,17 +69,27 @@ public class AuthService : IAuthService
         return Login(loginDto);
     }
 
-    private string GenerateToken(string email, string role)
+    public void CheckUser(int id)
+    {
+        var user = _users.FirstOrDefault(x => x.Id == id);
+        if (user == null)
+            throw new Exception("User not found");
+
+        return;
+    }
+
+    private string GenerateToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_tokenSettings.JwtKey);
+        var key = Encoding.UTF8.GetBytes(_tokenSettings!.JwtKey);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(
             [
-                new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.UserRole.ToString())
             ]),
 
             Issuer = _tokenSettings.JwtIssuer,
