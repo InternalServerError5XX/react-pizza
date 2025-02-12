@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import { pizzaApi } from "../components/utils/helpers/axiosInstance";
 import Categories from "../components/Filter/Categories";
 import Sort from "../components/Filter/Sort";
 import PizzaItem from "../components/Main/PizzaItem";
@@ -18,12 +18,11 @@ const Home = () => {
   const [items, setItems] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [refresh, setRefresh] = useState(0);
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const fetchData = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(API_URL, {
+      const { data } = await pizzaApi.get("", {
         params: {
           pageNumber,
           pageSize,

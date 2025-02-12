@@ -14,12 +14,11 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setCreatePizzaOpen } from "../../redux/slices/modalSlice";
-import axios from "axios";
+import { pizzaApi } from "../utils/helpers/axiosInstance";
 import { PizzaCategories } from "../utils/enums/PizzaCategories";
 import { PizzaTypes } from "../utils/enums/PizzaTypes";
 
 function CreatePizzaModal({ onCreate }) {
-  const API_URL = import.meta.env.VITE_API_URL;
   const dispatch = useDispatch();
   const open = useSelector((state) => state.modal.createPizzaOpen);
 
@@ -67,7 +66,7 @@ function CreatePizzaModal({ onCreate }) {
   };
 
   const sendRequest = async () => {
-    await axios.post(API_URL, {
+    await pizzaApi.post("", {
       ...pizza,
       sizes: pizza.sizes.split(",").map(Number),
       types: pizza.types.map((type) => parseInt(type, 10)),

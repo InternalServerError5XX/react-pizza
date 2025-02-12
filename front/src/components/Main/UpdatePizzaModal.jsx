@@ -13,13 +13,12 @@ import {
   FormControl,
   OutlinedInput,
 } from "@mui/material";
-import axios from "axios";
+import { pizzaApi } from "../utils/helpers/axiosInstance";
 import { PizzaCategories } from "../utils/enums/PizzaCategories";
 import { PizzaTypes } from "../utils/enums/PizzaTypes";
 import { setPizzaToUpdate } from "../../redux/slices/modalSlice";
 
 function UpdatePizzaModal({ onUpdate }) {
-  const API_URL = import.meta.env.VITE_API_URL;
   const dispatch = useDispatch();
   const pizzaToUpdate = useSelector((state) => state.modal.pizzaToUpdate);
   const [pizza, setPizza] = useState({});
@@ -71,7 +70,7 @@ function UpdatePizzaModal({ onUpdate }) {
       updatedPizza.category = parseInt(pizza.category, 10);
 
     if (Object.keys(updatedPizza).length > 0) {
-      await axios.patch(API_URL, updatedPizza, {
+      await pizzaApi.patch("", updatedPizza, {
         params: {
           id: pizza.id,
         },

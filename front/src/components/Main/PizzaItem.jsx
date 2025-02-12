@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import { pizzaApi } from "../utils/helpers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { setPizzaToUpdate } from "../../redux/slices/modalSlice";
 import {
@@ -30,9 +30,9 @@ function PizzaItem({
   const itemQuantity = useSelector((state) =>
     getItemQuantityById(state, id, activeSize, activeType)
   );
+  const role = useSelector((state) => state.auth.role);
 
   const typeNames = ["thin", "traditional"];
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleOpen = () =>
     dispatch(
@@ -50,7 +50,7 @@ function PizzaItem({
 
   const deletePizza = async () => {
     try {
-      await axios.delete(`${API_URL}${id}`);
+      await pizzaApi.delete(`${id}`);
       onDelete();
     } catch (error) {
       console.error("Error deleting pizza:", error);
@@ -104,7 +104,13 @@ function PizzaItem({
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">${price}</div>
-        <Stack direction="row" alignItems="center">
+        <Stack
+          direction="row"
+          alignItems="center"
+          style={{
+            marginRight: role?.toLowerCase() === "admin" ? "0px" : "85px",
+          }}
+        >
           <button
             className="button button--outline"
             style={{ padding: "2px 0px", minWidth: "30px" }}
@@ -124,20 +130,28 @@ function PizzaItem({
             <AddIcon style={{ fontSize: "18px", marginTop: "2px" }} />
           </button>
         </Stack>
-        <button
-          className="button button--outline"
-          style={{ padding: "7px 0px", minWidth: "50px" }}
-          onClick={handleOpen}
-        >
-          <EditIcon />
-        </button>
-        <button
-          className="button button--outline"
-          style={{ padding: "7px 0px", minWidth: "50px", marginLeft: "-20px" }}
-          onClick={deletePizza}
-        >
-          <DeleteOutlineIcon />
-        </button>
+        {role?.toLowerCase() === "admin" && (
+          <>
+            <button
+              className="button button--outline"
+              style={{ padding: "7px 0px", minWidth: "50px" }}
+              onClick={handleOpen}
+            >
+              <EditIcon />
+            </button>
+            <button
+              className="button button--outline"
+              style={{
+                padding: "7px 0px",
+                minWidth: "50px",
+                marginLeft: "-20px",
+              }}
+              onClick={deletePizza}
+            >
+              <DeleteOutlineIcon />
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

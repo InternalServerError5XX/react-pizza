@@ -1,15 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Search from "../Filter/Search";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useDispatch, useSelector } from "react-redux";
 import { setCreatePizzaOpen } from "../../redux/slices/modalSlice";
 import { getCartItemsCount, getCartTotal } from "../../redux/slices/cartSlise";
+import { logout } from "../../redux/slices/authSlice";
 
 function Header() {
   const dispatch = useDispatch();
   const handleOpen = () => dispatch(setCreatePizzaOpen(true));
   const cartItemsCount = useSelector((state) => getCartItemsCount(state));
   const cartTotal = useSelector((state) => getCartTotal(state));
+  const token = useSelector((state) => state.auth.token);
+  const role = useSelector((state) => state.auth.role);
+  const navigate = useNavigate();
+
+  const handleAuth = () => {
+    navigate("/login");
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <header className="header">
@@ -24,15 +36,43 @@ function Header() {
           </div>
         </Link>
         <Search />
-        <div className="header__cart" onClick={handleOpen}>
-          <div
-            className="button button--cart"
-            style={{ padding: "10px", minWidth: "20px" }}
-          >
-            <AddCircleOutlineIcon sx={{ marginLeft: 1 }} />
+        {!token ? (
+          <div className="header__cart" onClick={handleAuth}>
+            <div
+              className="button button--outline"
+              style={{ padding: "10px", minWidth: "20px" }}
+            >
+              Authenticate
+            </div>
           </div>
-        </div>
-        <div className="header__cart" style={{ marginLeft: "-250px" }}>
+        ) : (
+          <div
+            className="header__cart"
+            style={{
+              marginRight: role?.toLowerCase() === "admin" ? "-215px" : "-25px",
+            }}
+            onClick={handleLogout}
+          >
+            <div
+              className="button button--outline"
+              style={{ padding: "10px", minWidth: "20px" }}
+            >
+              Logout
+            </div>
+          </div>
+        )}
+
+        {role?.toLowerCase() === "admin" && (
+          <div className="header__cart" onClick={handleOpen}>
+            <div
+              className="button button--cart"
+              style={{ padding: "10px", minWidth: "20px" }}
+            >
+              <AddCircleOutlineIcon sx={{ marginLeft: 1 }} />
+            </div>
+          </div>
+        )}
+        <div className="header__cart" style={{ marginLeft: "-220px" }}>
           <Link to="/cart" className="button button--cart">
             <span>${cartTotal}</span>
             <div className="button__delimiter"></div>
