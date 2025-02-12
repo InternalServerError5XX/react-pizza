@@ -7,7 +7,7 @@ public class LoginDto
 {
     [Required]
     [EmailAddress]
-    [JsonPropertyName("emai")]
+    [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
 
     [Required]

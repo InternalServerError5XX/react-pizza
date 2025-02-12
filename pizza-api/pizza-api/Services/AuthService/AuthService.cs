@@ -35,7 +35,7 @@ public class AuthService : IAuthService
             throw new NullReferenceException("User does not exist");
 
         if (user.Password != loginDto.Password)
-            throw new Exception("Password invalid");
+            throw new Exception("Invalid password");
 
         _logger.LogInformation($"User with id {user.Id} logined");
         return GenerateToken(user.Email, user.UserRole.ToString());

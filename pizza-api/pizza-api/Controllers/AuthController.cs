@@ -7,17 +7,16 @@ namespace pizza_api.Controllers;
 
 [Route("api/auth")]
 [ApiController]
+[TypeFilter(typeof(ExceptionFilter))]
 public class AuthController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var response = await _mediator.Send(new LoginQuery(loginDto));
+        var response = await mediator.Send(new LoginQuery(loginDto));
         return Ok(response);
     }
 
@@ -27,7 +26,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var response = await _mediator.Send(new RegisterQuery(registerDto));
+        var response = await mediator.Send(new RegisterQuery(registerDto));
         return Ok(response);
     }
 }

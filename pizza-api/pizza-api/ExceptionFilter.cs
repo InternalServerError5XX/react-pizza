@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace pizza_api;
 
-public class ExceptionFilter : IExceptionFilter
+public class ExceptionFilter(ILogger<ExceptionFilter> logger) : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
@@ -14,6 +14,7 @@ public class ExceptionFilter : IExceptionFilter
         });
 
         context.ExceptionHandled = true;
+        logger.LogError(context.Exception.Message);
     }
 
 }
